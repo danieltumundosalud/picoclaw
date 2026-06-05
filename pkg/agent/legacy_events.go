@@ -2,11 +2,13 @@ package agent
 
 import (
 	"context"
+	"fmt"
 	"sync"
 	"sync/atomic"
 
 	"github.com/sipeed/picoclaw/pkg/bus"
 	runtimeevents "github.com/sipeed/picoclaw/pkg/events"
+	"github.com/sipeed/picoclaw/pkg/logger"
 )
 
 const defaultEventSubscriberBuffer = 16
@@ -90,6 +92,10 @@ func (al *AgentLoop) UnsubscribeEvents(id uint64) {
 	}
 	sub, ok := value.(legacyEventSubscription)
 	if !ok {
+		logger.WarnCF("agent", "UnsubscribeEvents: unexpected type in subscription map", map[string]any{
+			"id":   id,
+			"type": fmt.Sprintf("%T", value),
+		})
 		return
 	}
 	sub.cancel()
