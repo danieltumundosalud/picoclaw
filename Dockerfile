@@ -6,7 +6,7 @@ RUN corepack enable
 WORKDIR /src
 COPY web ./web
 WORKDIR /src/web/frontend
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile --config.dangerouslyAllowAllBuilds=true
 RUN pnpm build:backend
 
 # ============================================================
